@@ -76,12 +76,12 @@ const setInserirNovoFilme = async function (dadosFilme, contentType) {
 const setAtualizarFilme = async function (id, dadoAtualizado, contentType) {
     if (String(contentType).toLowerCase() == 'application/json') {
         let atualizarFilmeJSON = {}
-        let dadosFilmes = await filmesDAO.selectAllFilmes()
         let validateStatus = false
+        let ultimoID = await filmesDAO.getIDFilme()
         if (id == '' || id == undefined || id == isNaN(id) || id == null) {
             return message.ERROR_INVALID//400
         }
-        else if (id <= 0 || id > dadosFilmes.length) {
+        else if (id >ultimoID) {
             return message.ERROR_NOT_FOUND//404
         }
         else {
@@ -143,7 +143,14 @@ const setExcluirFilme = async function (id) {
             return message.ERROR_INVALID//400
         }
         else {
-            let idFilme = await filmesDAO.deleteFilme(id)
+             
+            let idFilmeAtor = await filmesDAO.deleteAtorFilme(id)
+            let idFilmeDiretor = await filmesDAO.deleteDiretorFilme(id)
+            let idFilmeNacionalidade = await filmesDAO.deleteFilmeNacionalidade(id)
+            let idFilmeGenero = await filmesDAO.deleteGeneroFilme(id)
+
+            let idFilme= await filmesDAO.deleteFilme(id)
+
             if (idFilme) {
                 return message.SUCCESS_DELETED_ITEM//200
             }
@@ -222,11 +229,10 @@ const getListarFilmesByGenero=async function(idGenero) {
 
 const getListarFilmesByNacionalidade=async function(idNacionalidade) {
     let dadosFilmeNacionalidade=await filmesDAO.selectAllFilmesNacionalidade(idNacionalidade)
-
     let filmesJSON = {}
-
     if (dadosFilmeNacionalidade) {
         filmesJSON.filmes = dadosFilmeNacionalidade
+
         filmesJSON.quantidade = dadosFilmeNacionalidade.length
         filmesJSON.status_code = 200
         return filmesJSON
@@ -302,7 +308,7 @@ const getBuscarFilmePorId = async function (id) {
         while (cont<dadosTblIntermediaria.length) {
             let idGenero=dadosTblIntermediaria[cont].id_genero
             let dadosGenero=await filmesDAO.selectByIdGenero(idGenero)
-generoArray.push(dadosGenero[0])
+        generoArray.push(dadosGenero[0])
             cont++
         }
         if (dadosFilme && generoArray) {
@@ -388,11 +394,11 @@ const setInserirNovoGenero = async function (dadosGenero, contentType) {
 const setAtualizarGenero = async function (id, dadoAtualizado, contentType) {
     if (String(contentType).toLowerCase() == 'application/json') {
         let atualizarGeneroJSON = {}
-        let dadosGeneros = await filmesDAO.selectAllGeneros()
+        let ultimoID = await filmesDAO.getIDGenero()
         if (id == '' || id == undefined || id == isNaN(id) || id == null) {
             return message.ERROR_INVALID//400
         }
-        else if (id > dadosGeneros.length) {
+        else if (id > ultimoID) {
             return message.ERROR_NOT_FOUND//404
         }
         else {
@@ -425,6 +431,7 @@ const setExcluirGenero = async function (id) {
             return message.ERROR_INVALID//400
         }
         else {
+            let idFilmeGenero = await filmesDAO.deleteFilmeGenero(id)
             let idGenero = await filmesDAO.deleteGenero(id)
             if (idGenero) {
                 return message.SUCCESS_DELETED_ITEM//200

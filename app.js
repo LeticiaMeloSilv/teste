@@ -147,7 +147,7 @@ app.post('/V2/ACMEFilmes/filme', cors(), bodyParserJSON, async function (request
 
     let contentType=request.headers['content-type']
     let dadosBody = request.body
-    
+
     let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody,contentType)
 
     response.status(resultDadosNovoFilme.status_code)
@@ -158,14 +158,12 @@ app.delete('/V2/ACMEFilmes/filme/:id', cors(), async function (request,response)
     let idFilme = request.params.id
 
     let resultDados = await controllerFilmes.setExcluirFilme(idFilme)
-
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
-//atualiza filme-MESMA COISA,MDSSSS,DEU ERRO
+//atualiza filme
 app.put('/V2/ACMEFilmes/filme/:id', cors(), bodyParserJSON, async function (request, response) {
     let idFilme = request.params.id
-
     let contentType=request.headers['content-type']
     let dadosBody = request.body
     
@@ -185,7 +183,7 @@ app.post('/V3/ACMEFilmes/genero', cors(), bodyParserJSON, async function (reques
 
     let contentType=request.headers['content-type']
     let dadosBody = request.body
-    
+
     let resultDadosNovoGenero = await controllerFilmes.setInserirNovoGenero(dadosBody,contentType)
 
     response.status(resultDadosNovoGenero.status_code)
@@ -229,7 +227,7 @@ app.post('/V3/ACMEFilmes/classificacao', cors(), bodyParserJSON, async function 
 
     let contentType=request.headers['content-type']
     let dadosBody = request.body
-    
+
     let resultDadosNovaClassificacao = await controllerFilmes.setInserirNovaClassificacao(dadosBody,contentType)
 
     response.status(resultDadosNovaClassificacao.status_code)

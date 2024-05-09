@@ -98,7 +98,57 @@ const updateFilme = async function (id, dadoAtualizado) {
 //funcao para excluir um filme do BD
 const deleteFilme = async function (id) {
     try {
-        let sql = `delete from tbl_filme where id = ${id}`
+        let sql = `delete from tbl_filme where id = ${id};
+        `
+        // DELETE FROM tbl_ator_filme WHERE id_filme = ${id};
+        // DELETE FROM tbl_diretor_filme WHERE id_filme = ${id};
+        // DELETE FROM tbl_filme_genero WHERE id_filme = ${id};
+        // DELETE FROM tbl_nacionalidade_filme WHERE id_filme = ${id};
+        let rsFilme = await prisma.$executeRawUnsafe(sql)
+        return rsFilme
+    } catch (error) {
+        return false
+    }
+}
+const deleteAtorFilme = async function (id) {
+    try {
+        let sql = `DELETE FROM tbl_ator_filme WHERE id_filme = ${id};`
+        let rsFilme = await prisma.$executeRawUnsafe(sql)
+        return rsFilme
+    } catch (error) {
+        return false
+    }
+}
+const deleteDiretorFilme = async function (id) {
+    try {
+        let sql = `DELETE FROM tbl_diretor_filme WHERE id_filme = ${id};`
+        let rsFilme = await prisma.$executeRawUnsafe(sql)
+        return rsFilme
+    } catch (error) {
+        return false
+    }
+}
+const deleteFilmeGenero = async function (id) {
+    try {
+        let sql = `DELETE FROM tbl_filme_genero WHERE id_genero = ${id}`
+        let rsFilme = await prisma.$executeRawUnsafe(sql)
+        return rsFilme
+    } catch (error) {
+        return false
+    }
+}
+const deleteGeneroFilme = async function (id) {
+    try {
+        let sql = `DELETE FROM tbl_filme_genero WHERE id_filme = ${id}`
+        let rsFilme = await prisma.$executeRawUnsafe(sql)
+        return rsFilme
+    } catch (error) {
+        return false
+    }
+}
+const deleteFilmeNacionalidade = async function (id) {
+    try {
+        let sql = `DELETE FROM tbl_nacionalidade_filme WHERE id_filme = ${id};`
         let rsFilme = await prisma.$executeRawUnsafe(sql)
         return rsFilme
     } catch (error) {
@@ -285,10 +335,13 @@ const selectAllFilmesNacionalidade = async function (idNacionalidade) {
         tbl_filme.*,
         tbl_classificacao.classificacao,
         tbl_classificacao.classificacao_foto,
+        tbl_genero.id as id_genero,
+		tbl_genero.nome as genero,
         tbl_nacionalidade.id as id_nacionalidade,
         tbl_nacionalidade.nome_pais as nacionalidade
     from tbl_filme 
     join tbl_classificacao on tbl_filme.id_classificacao=tbl_classificacao.id
+	join tbl_genero on tbl_filme.id=tbl_genero.id
     join tbl_nacionalidade_filme on
         tbl_filme.id=tbl_nacionalidade_filme.id_filme
     join tbl_nacionalidade on
@@ -712,6 +765,11 @@ module.exports = {
     selectAllNacionalidadeFilme,
 
 
+    deleteAtorFilme,
+    deleteDiretorFilme,
+    deleteFilmeNacionalidade,
+    deleteFilmeGenero,
+    deleteGeneroFilme,
 
 
 
