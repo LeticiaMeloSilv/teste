@@ -153,6 +153,8 @@ const getIDFilme = async function () {
         return false
     }
 }
+
+
 //funcao que pega todos os filmes com o mesmo genero
 const selectAllFilmesGenero = async function (idGenero) {
     try {
@@ -175,7 +177,6 @@ const selectAllFilmesGenero = async function (idGenero) {
         return false
     }
 }
-
 //Funcao que pega filme por id e seus generos
 const selectByIdFilmeComGenero = async function (IDFilme) {
     try {
@@ -216,8 +217,6 @@ GROUP BY tbl_filme.id;`
         return false
     }
 }
-
-
 const updateFilmeGenero = async function (id, dadosFilme) {
     try {
         let sql = `update tbl_filme_genero
@@ -240,7 +239,6 @@ const updateFilmeGenero = async function (id, dadosFilme) {
     }
 
 }//inativo
-
 const insertFilmeGenero = async function (dadosFilme) {
     try {
         let sql = `insert into tbl_filme_genero (id_filme, id_genero) 
@@ -263,7 +261,6 @@ const insertFilmeGenero = async function (dadosFilme) {
     }
 
 }
-
 const selectFilmeGenero = async function (id) {
     try {
         let sql = `select * from tbl_filme_genero where id_filme=${id};`
@@ -282,63 +279,16 @@ const selectFilmeGenero = async function (id) {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const selectAllFilmesNacionalidade = async function (idNacionalidade) {
     try {
         let sql = `select 
         tbl_filme.*,
+        tbl_classificacao.classificacao,
+        tbl_classificacao.classificacao_foto,
         tbl_nacionalidade.id as id_nacionalidade,
         tbl_nacionalidade.nome_pais as nacionalidade
     from tbl_filme 
+    join tbl_classificacao on tbl_filme.id_classificacao=tbl_classificacao.id
     join tbl_nacionalidade_filme on
         tbl_filme.id=tbl_nacionalidade_filme.id_filme
     join tbl_nacionalidade on
@@ -770,11 +720,3 @@ module.exports = {
     insertFilmeGenero,
     selectFilmeGenero
 }
-
-
-
-
-
-
-//arranjar um jeito de na funcao selectallfilmes, ele pegue tambem o genero do filme e talsss
-//descubrir oq aconteceu com o id 1 pra vc nn conseguir fzr nenhuma interacao com ele(tipo..??????????)

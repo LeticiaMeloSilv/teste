@@ -220,12 +220,6 @@ const getListarFilmesByGenero=async function(idGenero) {
 
 
 
-
-
-
-
-
-
 const getListarFilmesByNacionalidade=async function(idNacionalidade) {
     let dadosFilmeNacionalidade=await filmesDAO.selectAllFilmesNacionalidade(idNacionalidade)
 
@@ -329,9 +323,6 @@ generoArray.push(dadosGenero[0])
     }
 
 }
-
-
-
 
 const getBuscarFilme = async function (id) {
     let idFilme = id

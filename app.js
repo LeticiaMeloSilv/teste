@@ -40,7 +40,7 @@ const controllerFilmes = require('./controller/controller_filme.js')
 const bodyParserJSON = bodyParser.json()
 
 //*******************************************************************************FILME********************************************************************************************/
-//pega todos os filmes localmente
+//pega todos os filmes localmente-ok
 app.get('/V1/ACMEFilmes/filmes', cors(), async function (request, response) {
     let listaFilmes = controleDados.getListaFilmes();
 
@@ -52,7 +52,7 @@ app.get('/V1/ACMEFilmes/filmes', cors(), async function (request, response) {
         response.status(404);
     }
 })//Periodo de utilização 01/2024-02/2024
-//pega todos os filmes do banco
+//pega todos os filmes do banco-ok(falta colocar no select coisas da nacionalidade, genero, ator e diretor)
 app.get('/V2/ACMEFilmes/filmes', cors(), async function (request, response) {
     let dadosFilmes = await controllerFilmes.getListarFilmes()
 
@@ -61,8 +61,7 @@ app.get('/V2/ACMEFilmes/filmes', cors(), async function (request, response) {
 
 })//Ativo
 
-
-//pega todos os filmes do mesmo genero
+//pega todos os filmes do mesmo genero-ok(falta adicionar nacionalidade, ator e diretor)
 app.get('/V2/ACMEFilmes/filmes/genero/:genero', cors(), async function (request, response) {
     let id = request.params.genero
 
@@ -77,8 +76,7 @@ app.get('/V2/ACMEFilmes/filmes/genero/:genero', cors(), async function (request,
     }
 
 })
-
-//VERIFICAR ESSE DEPOIS, TO FOCADA EM FILMES AGORA
+//pega todos os filmes da mesma nacionalidade-ok(falta adicionar genero, ator e diretor)
 app.get('/V2/ACMEFilmes/filmes/nacionalidade/:nacionalidade', cors(), async function (request, response) {
     let id = request.params.nacionalidade
 
@@ -93,7 +91,7 @@ app.get('/V2/ACMEFilmes/filmes/nacionalidade/:nacionalidade', cors(), async func
     }
 
 })
-//Retorna filmes com filtro de nome
+//Retorna filmes com filtro de nome-ok(adicionar genero, ator e diretor)
 app.get('/V2/ACMEFilmes/filmes/filtro', cors(), async function (request, response) {
     let nome = request.query.nome
     let dadosFilme = await controllerFilmes.getNomeFilme(nome)
@@ -102,7 +100,7 @@ app.get('/V2/ACMEFilmes/filmes/filtro', cors(), async function (request, respons
     response.status(200)
 })
 
-//Retorna dados do filme local filtrando pelo id
+//Retorna dados do filme local filtrando pelo id-ok
 app.get('/V1/ACMEFilmes/filme/1/:id', cors(), async function (request, response) {
     let id = request.params.id
     let filme = controleDados.getFilmeId(id)
@@ -123,7 +121,7 @@ app.get('/V2/ACMEFilmes/filme/:id', cors(), async function (request, response) {
 
     response.status(dadosFilme.status_code)
     response.json(dadosFilme)
-})//Ativo
+})//periodo de utilizacao 02/2024-04/2024
 //Retorna dados do filme do banco filtrando pelo id
 app.get('/V3/ACMEFilmes/filme/:id', cors(), async function (request, response) {
     let idFilme = request.params.id
@@ -132,7 +130,7 @@ app.get('/V3/ACMEFilmes/filme/:id', cors(), async function (request, response) {
 
     response.status(dadosFilme.status_code)
     response.json(dadosFilme)
-})//Ativo
+})//Ativo(V3 &V4 dao o mesmo resultado, por meios diferentes(o v3 ta sem infos especificas da classificacao))
 app.get('/V4/ACMEFilmes/filme/:id', cors(), async function (request, response) {
     let idFilme = request.params.id
 
@@ -140,9 +138,11 @@ app.get('/V4/ACMEFilmes/filme/:id', cors(), async function (request, response) {
 
     response.status(dadosFilme.status_code)
     response.json(dadosFilme)
-})//Ativo
+})//Ativo(V3 &V4 dao o mesmo resultado, por meios diferentes)
 
-//Manda pro DB dados de um novo filme
+// V3 &V4 FALTA NACIONALIDADE,GENERO E TALS
+
+//Manda pro DB dados de um novo filme(mudar o jeito q manda as infos(sem ser por id tlvzz??))
 app.post('/V2/ACMEFilmes/filme', cors(), bodyParserJSON, async function (request, response) {
 
     let contentType=request.headers['content-type']
@@ -153,6 +153,7 @@ app.post('/V2/ACMEFilmes/filme', cors(), bodyParserJSON, async function (request
     response.status(resultDadosNovoFilme.status_code)
     response.json(resultDadosNovoFilme)
 })
+//deleta filme(Fazer ele deletar todas as info até as de outras tabelas)DEU ERRO DO NADA, VERIFICAR
 app.delete('/V2/ACMEFilmes/filme/:id', cors(), async function (request,response) {
     let idFilme = request.params.id
 
@@ -161,6 +162,7 @@ app.delete('/V2/ACMEFilmes/filme/:id', cors(), async function (request,response)
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
+//atualiza filme-MESMA COISA,MDSSSS,DEU ERRO
 app.put('/V2/ACMEFilmes/filme/:id', cors(), bodyParserJSON, async function (request, response) {
     let idFilme = request.params.id
 
